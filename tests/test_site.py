@@ -47,7 +47,8 @@ def test_validation_rejects_bad_extension_and_period():
     assert "Допустимы" in site.validate_image_file(Upload())
 
 
-def test_post_accepts_valid_image_when_captcha_is_not_configured():
+def test_post_accepts_valid_image_when_captcha_is_not_configured(monkeypatch):
+    monkeypatch.setattr(site, "RECAPTCHA_SECRET_KEY", "")
     client = site.app.test_client()
     image_buffer = io.BytesIO()
     Image.new("RGB", (24, 24), (120, 80, 40)).save(image_buffer, format="PNG")

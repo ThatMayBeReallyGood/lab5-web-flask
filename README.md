@@ -42,25 +42,17 @@ python -m pytest -q
 
 Покрыты обработка изображения, гистограмма, диапазон периода и неразрешенное расширение файла, а также Flask-маршрут.
 
-## Деплой на Render
+## Деплой на Railway как альтернатива недоступному Render
 
-1. Создайте репозиторий GitHub и загрузите проект:
+1. Войдите на `railway.com` через GitHub.
+2. Выберите `New Project` → `Deploy from GitHub repo`.
+3. Укажите репозиторий `lab5-web-flask` и ветку `main`.
+4. В разделе `Variables` задайте `RECAPTCHA_SITE_KEY` и `RECAPTCHA_SECRET_KEY`.
+5. Railway обнаружит Python-проект и прочитает `railway.toml` или `Procfile`.
+6. В разделе `Settings` → `Networking` нажмите `Generate Domain`.
+7. Добавьте сгенерированный домен без `https://` в настройки доменов ключа Google reCAPTCHA.
 
-```powershell
-git init
-git add .
-git commit -m "Lab 3 Flask app"
-git branch -M main
-git remote add origin https://github.com/<login>/<repo>.git
-git push -u origin main
-```
-
-2. В Render выберите `New` → `Blueprint` и укажите репозиторий.
-3. Render прочитает `render.yaml`.
-4. В настройках сервиса задайте `RECAPTCHA_SITE_KEY` и `RECAPTCHA_SECRET_KEY`.
-5. Render выполнит `pip install -r requirements.txt` и запустит `gunicorn app:app`.
-
-Альтернативно создайте Web Service вручную: Runtime `Python`, build `pip install -r requirements.txt`, start `gunicorn app:app`.
+Railway запускает `gunicorn app:app`, устанавливает зависимости из `requirements.txt` и использует корень `/` для проверки работоспособности приложения.
 
 ## Нейронная сеть
 
