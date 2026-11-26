@@ -7,8 +7,11 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 import numpy as np
 import requests
+from dotenv import load_dotenv
 from flask import Flask, render_template, request
 from PIL import Image, ImageOps, UnidentifiedImageError
+
+load_dotenv()
 
 app = Flask(__name__)
 app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
