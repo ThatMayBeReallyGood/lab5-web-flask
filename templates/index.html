@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Периодическая обработка изображения</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    {% if recaptcha_site_key %}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    {% endif %}
+</head>
+<body>
+<main class="page-shell">
+    <header>
+        <h1>Вариант 19: периодическое преобразование изображения</h1>
+        <p>Умножение каналов RGB на sin/cos с горизонтальной и вертикальной составляющими.</p>
+    </header>
+
+    {% if error %}
+    <div class="error" role="alert">{{ error }}</div>
+    {% endif %}
+
+    <fieldset>
+        <legend>Параметры обработки</legend>
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-grid">
+                <label>
+                    Исходное изображение
+                    <input type="file" name="image" accept=".png,.jpg,.jpeg,.gif,.bmp,.webp" required>
+                </label>
+
+                <label>
+                    Период, пиксели (2–1000)
+                    <input type="number" name="period" value="100" min="2" max="1000" step="1" required>
+                </label>
+
+                <label>
+                    Периодическая функция
+                    <select name="function">
+                        <option value="sin">sin</option>
+                        <option value="cos">cos</option>
+                    </select>
+                </label>
+            </div>
+
+            {% if recaptcha_site_key %}
+            <div class="captcha">
+                <div class="g-recaptcha" data-sitekey="{{ recaptcha_site_key }}"></div>
+            </div>
+            {% endif %}
+
+            <button type="submit">Обработать изображение</button>
+        </form>
+    </fieldset>
+
+    {% if results %}
+    <section class="results">
+        <h2>Результат обработки</h2>
+        <p><strong>Функция:</strong> {{ results.function }}; <strong>период:</strong> {{ results.period }} px</p>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Исходное изображение</th>
+                    <th>Обработанное изображение</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><img src="{{ results.original }}" alt="Исходное изображение"></td>
+                    <td><img src="{{ results.processed }}" alt="Обработанное изображение"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <fieldset>
+            <legend>Гистограммы распределения цветов</legend>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Исходное изображение</th>
+                        <th>Обработанное изображение</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src="data:image/png;base64,{{ results.original_histogram }}" alt="Гистограмма исходного изображения"></td>
+                        <td><img src="data:image/png;base64,{{ results.processed_histogram }}" alt="Гистограмма обработанного изображения"></td>
+                    </tr>
+                </tbody>
+            </table>
+        </fieldset>
+
+        <p class="classification">{{ results.classification }}</p>
+    </section>
+    {% endif %}
+</main>
+</body>
+</html>
