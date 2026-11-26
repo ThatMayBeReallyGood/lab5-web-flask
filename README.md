@@ -42,17 +42,19 @@ python -m pytest -q
 
 Покрыты обработка изображения, гистограмма, диапазон периода и неразрешенное расширение файла, а также Flask-маршрут.
 
-## Деплой на Railway как альтернатива недоступному Render
+## Деплой на Faable
 
-1. Войдите на `railway.com` через GitHub.
-2. Выберите `New Project` → `Deploy from GitHub repo`.
-3. Укажите репозиторий `lab5-web-flask` и ветку `main`.
-4. В разделе `Variables` задайте `RECAPTCHA_SITE_KEY` и `RECAPTCHA_SECRET_KEY`.
-5. Railway обнаружит Python-проект и прочитает `railway.toml` или `Procfile`.
-6. В разделе `Settings` → `Networking` нажмите `Generate Domain`.
-7. Добавьте сгенерированный домен без `https://` в настройки доменов ключа Google reCAPTCHA.
+1. Откройте `https://dashboard.faable.com` и войдите через GitHub.
+2. Создайте Project и App.
+3. В разделе `Link repository` выберите GitHub и репозиторий `lab5-web-flask`.
+4. Добавьте переменные окружения `RECAPTCHA_SITE_KEY` и `RECAPTCHA_SECRET_KEY`.
+5. Укажите ветку деплоя `main`.
+6. Push в GitHub запустит автоматическую сборку на Faable.
+7. Faable определит Flask по `requirements.txt` и `app.py`, установит зависимости и запустит Gunicorn.
+8. Публичный адрес приложения будет иметь формат `https://<app>.faable.link`.
+9. Добавьте домен `*.faable.link` или конкретный адрес приложения в настройках доменов ключа Google reCAPTCHA.
 
-Railway запускает `gunicorn app:app`, устанавливает зависимости из `requirements.txt` и использует корень `/` для проверки работоспособности приложения.
+Проект использует `.python-version` для Python 3.12, `requirements.txt` для зависимостей и `Procfile` для запуска `gunicorn app:app`.
 
 ## Нейронная сеть
 
